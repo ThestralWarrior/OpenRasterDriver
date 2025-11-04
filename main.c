@@ -3,10 +3,16 @@
 #include <cups/raster.h>
 #include "pcl6.h"
 
+#define DIRECT_TO_FILE 1
+
 int main() {
 	cups_raster_t *ras = cupsRasterOpen(0, CUPS_RASTER_READ);
 	cups_page_header2_t header;
+#if DIRECT_TO_FILE
 	FILE *out = fopen("output.pcl", "wb");
+#else
+	FILE *out = stdout;
+#endif
 	int streamHeaderEmitted = 0;
 	int page = 0;
 	unsigned int y;
@@ -44,9 +50,11 @@ int main() {
 
 	pcl6_end_session(out);
 
+#if DIRECT_TO_FILE 
 	fclose(out);
+#endif
 	cupsRasterClose(ras);
 
-	printf("PCL6 file output.pcl is ready!\n");
+	printf("PCL6 properly generated!\n");
 	return 0;
 }
