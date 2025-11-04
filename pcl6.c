@@ -38,9 +38,23 @@ static uint8_t pcl6_return_media(cups_page_header2_t *header) {
 	if(fabs(w - 420.0f) < eps && fabs(h - 595.0f) < eps)
         media = PCL_E_MEDIA_A5;
 
-	printf("Media: %x\n", media);
-
     return media;
+}
+
+static uint8_t pcl6_return_duplex_mode(cups_page_header2_t *header) {
+    uint8_t duplexMode;
+
+    if (header->Tumble) {
+        duplexMode = (header->Orientation == CUPS_ORIENT_0 || header->Orientation == CUPS_ORIENT_180)
+            ? PCL_E_DUPLEX_HORIZONTAL_BINDING
+            : PCL_E_DUPLEX_VERTICAL_BINDING;
+    } else {
+            duplexMode = (header->Orientation == CUPS_ORIENT_0 || header->Orientation == CUPS_ORIENT_180)
+	        ? PCL_E_DUPLEX_VERTICAL_BINDING
+            : PCL_E_DUPLEX_HORIZONTAL_BINDING;
+    }
+	
+	return duplexMode;
 }
 
 /* Helper to emit attribute (ubyte) */
@@ -102,6 +116,13 @@ void pcl6_start_job(FILE *out, cups_page_header2_t *header) {
 	/* BeginPage */
 	pcl6_emit_attr_ubyte(out, PCL_ATTR_MEDIA_SIZE, media);
 	pcl6_emit_attr_ubyte(out, PCL_ATTR_ORIENTATION, orientation);
+	if(header->Duplex) {
+		uint8_t duplexMode = pcl6_return_duplex_mode(header);
+		pcl6_emit_attr_ubyte(out, PCL_ATTR_DUPLEX_PAGE_MODE, duplexMode);
+		pcl6_emit_attr_ubyte(out, PCL_ATTR_DUPLEX_PAGE_SIDE, PCL_E_FRONT_MEDIA_SIDE);
+	} else {
+		pcl6_emit_attr_ubyte(out, PCL_ATTR_SIMPLEX_PAGE_MODE, PCL_E_SIMPLEX_FRONT_SIDE);
+	}
 	PUT8(PCL_OP_BEGIN_PAGE);
 
 	pcl6_emit_attr_ubyte(out, PCL_ATTR_SOURCE_TYPE, PCL_E_DEFAULT_SOURCE);

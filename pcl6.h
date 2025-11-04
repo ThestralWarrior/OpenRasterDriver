@@ -65,6 +65,9 @@
 #define PCL_ATTR_SOURCE_TYPE		0x88
 #define PCL_ATTR_DATAORG			0x82
 #define PCL_ATTR_POINT				0x4C
+#define PCL_ATTR_SIMPLEX_PAGE_MODE	0x34
+#define PCL_ATTR_DUPLEX_PAGE_MODE	0x35
+#define PCL_ATTR_DUPLEX_PAGE_SIDE	0x36
 
 /* ============================= */
 /* Data-Type Tags				 */
@@ -134,12 +137,16 @@
 
 #define PCL_E_DEFAULT_SOURCE		0x00
 
+#define PCL_E_SIMPLEX_FRONT_SIDE	0x00
+
+#define PCL_E_DUPLEX_HORIZONTAL_BINDING 0x00
+#define PCL_E_DUPLEX_VERTICAL_BINDING	0x01
+
+#define PCL_E_FRONT_MEDIA_SIDE	0x00
+#define PCL_E_BACK_MEDIA_SIDE	0x01
+
 #define PCL_E_BINARY_HIGH_BYTE_FIRST	0x00
 #define PCL_E_BINARY_LOW_BYTE_FIRST		0x01
-
-#define PCL_ROP3_SRC			0xCC	/* Copy Source to Dest */
-#define PCL_ROP3_BLACK			0x00
-#define PCL_ROP3_WHITE			0xFF
 
 #define PCL_LSB_FIRST			0x29	/* ')' - little-endian */
 #define PCL_MSB_FIRST			0x28	/* '(' - big-endian */
