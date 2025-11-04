@@ -21,19 +21,19 @@ int main() {
 		if(!streamHeaderEmitted) {
 		    pcl6_start_session(out, &header);
 			streamHeaderEmitted = 1;
-			printf("Page header info:\n");
-			printf("cupsWidth: %d\n", header.cupsWidth);
-			printf("cupsHeight: %d\n", header.cupsHeight);
-			printf("cupsBitsPerColor: %d\n", header.cupsBitsPerColor);
-			printf("cupsBytesPerLine: %d\n", header.cupsBytesPerLine);
-			printf("HWResolution: %d x %d\n", header.HWResolution[0], header.HWResolution[1]);
-			printf("cupsColorSpace: %d\n", header.cupsColorSpace);
-			printf("Orientation: %d\n", header.Orientation);
-			printf("MediaType: %s\n", header.MediaType);
+			fprintf(stderr, "Page header info:\n");
+			fprintf(stderr, "cupsWidth: %d\n", header.cupsWidth);
+			fprintf(stderr, "cupsHeight: %d\n", header.cupsHeight);
+			fprintf(stderr, "cupsBitsPerColor: %d\n", header.cupsBitsPerColor);
+			fprintf(stderr, "cupsBytesPerLine: %d\n", header.cupsBytesPerLine);
+			fprintf(stderr, "HWResolution: %d x %d\n", header.HWResolution[0], header.HWResolution[1]);
+			fprintf(stderr, "cupsColorSpace: %d\n", header.cupsColorSpace);
+			fprintf(stderr, "Orientation: %d\n", header.Orientation);
+			fprintf(stderr, "MediaType: %s\n", header.MediaType);
 		}
 
 		page++;
-        printf("Page: %d\n", page);
+        fprintf(stderr, "Page: %d\n", page);
 
 		pcl6_start_job(out, &header);
 
@@ -55,6 +55,6 @@ int main() {
 #endif
 	cupsRasterClose(ras);
 
-	printf("PCL6 properly generated!\n");
+	fprintf(stderr, "PCL6 properly generated!\n");
 	return 0;
 }
